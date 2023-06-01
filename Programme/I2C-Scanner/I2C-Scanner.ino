@@ -1,6 +1,7 @@
 #include <Wire.h>
 
 void setup() {
+    Wire.end();
     Wire.begin();
     Serial.begin(9600);
     while(!Serial);
@@ -22,8 +23,7 @@ void loop() {
             Serial.print("I2C Device found at address 0x");
             if(address < 16)
                 Serial.print("0");
-            Serial.print(address,HEX);
-            Serial.println();
+            Serial.println(address,HEX);
 
             nDevices++;
         }
@@ -31,12 +31,11 @@ void loop() {
             Serial.print("Unkown error at address 0x");
             if(address < 16)
                 Serial.print("0");
-            Serial.print(address,HEX);
-            Serial.println();
+            Serial.println(address,HEX);
         }
     }
     if(nDevices == 0)
-        Serial.println("NO I2C device found");
+        Serial.println("No I2C device found");
     else
         Serial.println("done");
         

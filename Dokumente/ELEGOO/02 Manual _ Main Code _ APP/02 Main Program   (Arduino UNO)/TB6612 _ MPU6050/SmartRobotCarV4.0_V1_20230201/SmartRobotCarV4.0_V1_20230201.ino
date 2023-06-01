@@ -22,9 +22,6 @@ void setup()
 void loop()
 {
   //put your main code here, to run repeatedly :
-  Serial.println(counter);
-  counter += 1;
-  Application_FunctionSet.ApplicationFunctionSet_SmartRobotCarMotionControl(Forward, 100);
   wdt_reset();
   Application_FunctionSet.ApplicationFunctionSet_SensorDataUpdate();
   Application_FunctionSet.ApplicationFunctionSet_KeyCommand();

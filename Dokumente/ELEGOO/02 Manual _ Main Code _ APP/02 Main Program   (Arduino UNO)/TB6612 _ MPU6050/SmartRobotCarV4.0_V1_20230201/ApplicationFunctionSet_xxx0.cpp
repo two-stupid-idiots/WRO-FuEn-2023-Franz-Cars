@@ -15,11 +15,13 @@
 
 #include "ArduinoJson-v6.11.1.h" //ArduinoJson
 #include "MPU6050_getdata.h"
+#include "MPU6050.h"
 
 #define _is_print 1
 #define _Test_print 0
 
 ApplicationFunctionSet Application_FunctionSet;
+MPU6050 mpu;
 
 /*Hardware device object list*/
 MPU6050_getdata AppMPU6050getdata;
@@ -1803,7 +1805,7 @@ void ApplicationFunctionSet::ApplicationFunctionSet_SerialPortDataAnalysis(void)
     SerialPortData = "";
     if (error)
     {
-      Serial.println("error:deserializeJson");
+      //Serial.println("error:deserializeJson");
     }
     else if (!error) //Check if the deserialization is successful
     {
@@ -1858,6 +1860,15 @@ void ApplicationFunctionSet::ApplicationFunctionSet_SerialPortDataAnalysis(void)
         CMD_is_Servo = doc["D1"];
         CMD_is_Servo_angle = doc["D2"];
 #if _is_print
+        Serial.print('{' + CommandSerialNumber + "_ok}");
+#endif
+        break;
+      case 6:
+        int16_t ax, ay, az, gx, gy, gz;
+        mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+#if _is_print
+        char toString[50];
+        sprintf(toString, "_%d,%d,%d,%d,%d,%d,", ax, ay, az, gx, gy, gz);
         Serial.print('{' + CommandSerialNumber + "_ok}");
 #endif
         break;
@@ -1925,7 +1936,7 @@ void ApplicationFunctionSet::ApplicationFunctionSet_SerialPortDataAnalysis(void)
       case 100:                                                                             /*<Command：N 100> */
         Application_SmartRobotCarxxx0.Functional_Mode = CMD_ClearAllFunctions_Standby_mode; /*Clear all function:Enter standby mode*/
 #if _is_print
-        Serial.print("{ok}");
+        Serial.println("{\"N\":100}");
         //Serial.print('{' + CommandSerialNumber + "_ok}");
 #endif
         break;
@@ -1945,7 +1956,7 @@ void ApplicationFunctionSet::ApplicationFunctionSet_SerialPortDataAnalysis(void)
         }
 
 #if _is_print
-        Serial.print("{ok}");
+        Serial.println("{ok}");
         //Serial.print('{' + CommandSerialNumber + "_ok}");
 #endif
         break;
@@ -1963,7 +1974,7 @@ void ApplicationFunctionSet::ApplicationFunctionSet_SerialPortDataAnalysis(void)
 
 #if _Test_print
         //Serial.print('{' + CommandSerialNumber + "_ok}");
-        Serial.print("{ok}");
+        Serial.println("{ok}");
 #endif
         break;
 
@@ -1977,7 +1988,7 @@ void ApplicationFunctionSet::ApplicationFunctionSet_SerialPortDataAnalysis(void)
 
 #if _is_print
         //Serial.print('{' + CommandSerialNumber + "_ok}");
-        Serial.print("{ok}");
+        Serial.println("{ok}");
 #endif
         break;
       case 102: /*<Command：N 102> :Rocker control mode command*/
