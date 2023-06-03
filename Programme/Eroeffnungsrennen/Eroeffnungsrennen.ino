@@ -16,10 +16,6 @@ extern Ultraschallsensor Ultraschall;
 #include "VoltageControl.h"
 extern VoltageControl Spannungsmesser;
 
-//LED
-#include "LEDControl.h"
-extern LEDControl LED;
-
 //MPU6050 (I2C)
 #include "MPU6050.h"
 extern MPU6050 MPU;
@@ -36,20 +32,6 @@ void initAll() {
 
   //Spannungsmesser
   Spannungsmesser.initVoltageControl();
-
-  //LED
-  LED.initLED();
-}
-
-void controlVoltage() {
-  float voltage = Spannungsmesser.getVoltage();
-  Serial.println("Spannung: " + String(voltage) + "V");
-  if (voltage >= 8) {
-    LED.setColor(LED.getColor(0, 255, 0));
-  }
-  else {
-    LED.setColor(LED.getColor(255, 0, 0));
-  }
 }
 
 void setup() {
@@ -67,9 +49,10 @@ void setup() {
   //Initialisiere I2C
   Wire.begin(); //Meldung als Host
   MPU.startMPU(true); //starte MPU
-
-  //kontrolliere Spannung
-  controlVoltage();
+  
+  Fahren.runMotor(110, true);
+  delay(5000);
+  Fahren.runMotor(80,true);
 }
 
 void loop() {

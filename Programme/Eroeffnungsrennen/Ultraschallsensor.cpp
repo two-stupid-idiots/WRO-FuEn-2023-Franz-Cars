@@ -1,18 +1,19 @@
 #include "Ultraschallsensor.h"
 
-Servo servo;
+Servo servoUltraschall;
 
 void Ultraschallsensor::initUltraschallsensor(void) {
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
 
-  servo.attach(10);
-  servo.write(90); //Ausrichtung des Servomotors
-  Serial.println("Servo Position: 90°");
+  /*servoUltraschall.attach(ServoUltraschall_PIN);
+  int degree = 90;
+  servoUltraschall.write(degree); //Ausrichtung des Servomotors
+  Serial.println("Servo Ultraschall Position: " +String(degree) + "°");*/
 }
 
 int Ultraschallsensor::getUltrasonic(int degree, bool print) {
-  setServoPosition(degree, print);
+  //setServoPosition(degree, print);
   int i = 0;
   digitalWrite(TRIG_PIN, LOW);
   delayMicroseconds(2);
@@ -26,7 +27,7 @@ int Ultraschallsensor::getUltrasonic(int degree, bool print) {
 }
 
 void Ultraschallsensor::setServoPosition(int degree, bool print) {
-  servo.write(degree);
+  servoUltraschall.write(degree);
   if (print)
     Serial.println("Servo Position: " + String(degree) + "°");
 }

@@ -1,59 +1,20 @@
 #include "MotorControl.h"
 
+Servo servoLenkung;
+Servo servoFahren;
+
 void MotorControl::initMotorControl(void) {
-  //MotorPINs
-  pinMode(standBy, OUTPUT);
-  pinMode(PWMR, OUTPUT);
-  pinMode(RMR, OUTPUT);
-  pinMode(PWML, OUTPUT);
-  pinMode(RML, OUTPUT);
+  //Initialisiere Motoren
+  servoLenkung.attach(ServoLenkung_Pin);
+  servoFahren.attach(ServoFahren_Pin);
+
+  int degree = 90 ; //zwischen 50 (d.h. rechts) und 130 (d.h. links)
+  servoLenkung.write(degree);
+  Serial.println("Servo Lenkung Position: " + String(degree) + "°");
 }
 
-void MotorControl::runMotor(enum side side, enum motorRotation direction, int speed) {
-  digitalWrite(standBy, HIGH);
-
-  bool dir;
-  switch (direction) {
-    case forward:
-      dir = HIGH;
-      break;
-    case backward:
-      dir = LOW;
-      break;
-    default:
-      stopMotors();
-      break;
-  }
-
-  switch (side) {
-    case right:
-      digitalWrite(RMR, dir);
-      analogWrite(PWMR, speed);
-      break;
-    case left:
-      digitalWrite(RML, dir);
-      analogWrite(PWML, speed);
-      break;
-    case both:
-      digitalWrite(RMR, dir);
-      analogWrite(PWMR, speed);
-      digitalWrite(RML, dir);
-      analogWrite(PWML, speed);
-      break;
-    default:
-      stopMotors();
-      break;
-  }
-}
-
-void MotorControl::go_forward(int speed) {
-  runMotor(both, forward, speed);
-}
-
-void MotorControl::go_backward(int speed) {
-  runMotor(both, backward, speed);
-}
-
-void MotorControl::stopMotors() {
-  digitalWrite(standBy, LOW);
+void MotorControl::runMotor(int speed, bool print) { //speed als Zahl über 90
+  servoFahren.write(speed);
+  if (print)
+    Serial.println("Fahren mit " + String(speed));
 }

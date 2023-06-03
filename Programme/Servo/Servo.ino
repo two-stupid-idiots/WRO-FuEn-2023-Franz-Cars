@@ -1,5 +1,5 @@
 #include <Servo.h>
-#define Servo_Pin 10
+#define Servo_Pin 10 //11 für vorne
 
 Servo servo;
 
@@ -13,7 +13,7 @@ void setup() {
 }
 
 void loop() {
-  for (int i = 0; i <= 180; i += 10) {
+  /*for (int i = 0; i <= 180; i += 10) {
     servo.write(i);
     Serial.print("Position: ");
     Serial.print(i);
@@ -26,5 +26,5 @@ void loop() {
     Serial.print(i);
     Serial.println();
     delay(1000);
-  }
+  }*/
 }
